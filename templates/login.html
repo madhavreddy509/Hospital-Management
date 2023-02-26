@@ -32,7 +32,9 @@
               <div class="form-block">
                   <div class="mb-4">
                 </div>
-
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'logout' %}" class="btn btn--sub">Logout</a></li>
+              {% endif %}
               <span class="mb-0 text-muted">
                 {% if msg %}
                     {{ msg | safe }}

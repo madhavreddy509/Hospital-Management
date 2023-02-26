@@ -44,7 +44,15 @@
                       {{ form.username }}
                   </div>
                   <div class="form-group first">
-                    <label for="email">Email</label>
+                    <label for="FirstName">FirstName</label>
+                      {{ form.firstname }}
+                  </div>
+                  <div class="form-group first">
+                    <label for="LastName">LastName</label>
+                      {{ form.lastname}}
+                  </div>
+                  <div class="form-group first">
+                    <label for="Email">Email</label>
                       {{ form.email}}
                   </div>
                   <div class="form-group last mb-4">
@@ -55,24 +63,23 @@
                     <label for="password">confirm Password</label>
                       {{ form.password2 }}
                   </div>
+                  <div class="form-group last mb-4">
+                    <label for="Address">Address</label>
+                      {{ form.address }}
+                  </div>
                   <div class="d-flex mb-5 align-items-center">
-                    <label class="control control--checkbox mb-0"><span class="caption">Admin</span>
-                        {{ form.is_admin }}
+                    <label class="control control--checkbox mb-0"><span class="caption">patient</span>
+                        {{ form.is_patient }}
                       <div class="control__indicator"></div>
                     </label>
                   </div>
                   <div class="d-flex mb-5 align-items-center">
-                    <label class="control control--checkbox mb-0"><span class="caption">customer</span>
-                        {{ form.is_customer }}
+                    <label class="control control--checkbox mb-0"><span class="caption">doctor</span>
+                        {{ form.is_doctor }}
                       <div class="control__indicator"></div>
                     </label>
                   </div>
-                  <div class="d-flex mb-5 align-items-center">
-                    <label class="control control--checkbox mb-0"><span class="caption">employee</span>
-                        {{ form.is_employee }}
-                      <div class="control__indicator"></div>
-                    </label>
-                  </div>
+                 
                     <span class="text-error">{{ form.errors }}</span>
                   <input type="submit"  value="Register" class="btn btn-pill text-white btn-block btn-primary">
                 </form>

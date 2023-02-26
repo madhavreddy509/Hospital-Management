@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from .forms import SignUpForm, LoginForm
 from django.contrib.auth import authenticate, login
 # Create your views here.
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 def index(request):
     return render(request, 'index.html')
@@ -21,8 +22,10 @@ def register(request):
     else:
         form = SignUpForm()
     return render(request,'register.html', {'form': form, 'msg': msg})
+def logoutUser(request):
 
-
+    logout(request)
+    return redirect('login_view')
 def login_view(request):
     form = LoginForm(request.POST or None)
     msg = None
@@ -31,29 +34,24 @@ def login_view(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
-            if user is not None and user.is_admin:
+            if user is not None and user.is_patient:
                 login(request, user)
-                return redirect('adminpage')
-            elif user is not None and user.is_customer:
+                return redirect('patient')
+            elif user is not None and user.is_doctor:
                 login(request, user)
-                return redirect('customer')
-            elif user is not None and user.is_employee:
-                login(request, user)
-                return redirect('employee')
+                return redirect('doctor')
             else:
                 msg= 'invalid credentials'
         else:
             msg = 'error validating form'
     return render(request, 'login.html', {'form': form, 'msg': msg})
 
+@login_required(login_url='login_view')
+def patient(request):
+    return render(request,'patient.html')
 
-def admin(request):
-    return render(request,'admin.html')
+@login_required(login_url='login_view')
+def doctor(request):
+    return render(request,'doctor.html')
 
 
-def customer(request):
-    return render(request,'customer.html')
-
-
-def employee(request):
-    return render(request,'employee.html')

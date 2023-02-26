@@ -28,7 +28,10 @@
             <div class="col-md-12">
               <div class="form-block">
                   <div class="mb-4">
-                      <h1>Welcome Mr. Django </h1>
+                      <h1>  </h1>
+                      {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}" class="btn btn--sub">Logout</a></li>
+                      {% endif %}
                   </div>
                   <label>Log in if you already have registered!</label>
                   <div class="form-group last mb-4">
