@@ -1,0 +1,42 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<section class="projectsList">
+    <div class="container">
+        <div class="grid grid--three">
+
+            
+            <div class="column">
+                <div class="card project">
+                    
+                        <img class="project__thumbnail" src="{{project.featured_image.url}}" alt="project thumbnail" />
+                        <div class="card__body">
+                            <h3 class="project__title">{{project.title}}</h3>
+                            <p><a class="project__author" href="">By
+                                    {{project.owner}}</a>
+                            </p>
+                        <p>{{project.description}}</p>
+                        <p>category is : {{project.select_category}} </P>
+                            
+                        </div>
+                    
+                </div>
+            </div>
+            {% if request.user == project.owner %}
+            <a class="btn btn--sub btn--lg  my-md" href="{% url 'updateblog' project.id %}">Update blog</a>
+            
+            
+            <a class="btn btn--sub btn--lg  my-md" href="{% url 'deleteblog' project.id %}">delete blog</a>
+                        {% endif %}
+            
+        </div>
+    </div>
+</section>
+
+
+</main>
+
+
+
+
+{% endblock %}

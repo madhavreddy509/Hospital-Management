@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm,BlogForm
 from django.contrib.auth import authenticate, login
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from . models import Blog
+
 
 def index(request):
     return render(request, 'index.html')
@@ -54,4 +56,52 @@ def patient(request):
 def doctor(request):
     return render(request,'doctor.html')
 
+def postBlog(request):
+    profile=request.user
+    form=BlogForm()
+    if request.method=='POST':
+        form=BlogForm(request.POST,request.FILES)
+        if form.is_valid():
+            blog=form.save(commit=False)
+            blog.owner=profile
+            blog.save()
+            return redirect('blogs')
+        
+    content ={'form':form}
+    return render (request,'blog_form.html',content)
+    
+def blogs(request):
+    blogsobj=Blog.objects.filter(draft=False)
+    return render(request,'blogs.html',{'blogs':blogsobj})
 
+def blog(request,pk):
+    blogobj=Blog.objects.get(id=pk)
+    return render(request,'blog-single.html',{'project':blogobj})
+
+def updateblog(request,pk):
+    profile =request.user
+    project=profile.blog_set.get(id=pk)
+    form=BlogForm(instance=project)
+    if request.method=='POST':
+        form=BlogForm(request.POST,request.FILES,instance=project)
+        if form.is_valid():
+            form.save()
+            return redirect('blogs')
+    content ={'form':form}
+    return render (request,'blog_form.html',content)
+
+def deleteblog(request,pk):
+    profile =request.user
+    project=profile.blog_set.get(id=pk)
+    if request.method=="POST":
+        project.delete()
+        return redirect('blogs')
+    content ={'object':project}
+    return render (request,'delete-template.html',content)
+
+def drafts(request):
+    profile=request.user
+    blogsobj=profile.blog_set.filter(draft=True)
+    return render(request,'blogs.html',{'blogs':blogsobj,'message':'draft Blogs'})
+
+    

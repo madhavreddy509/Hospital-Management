@@ -1,0 +1,40 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<section class="projectsList">
+    <div class="container">
+        <div class="grid grid--three">
+{% if message %}
+<h1> {{message}} </h1>
+{% endif %}
+<br></br>
+
+            {% for project in blogs %}
+            <div class="column">
+                <div class="card project">
+                    <a href="{% url 'blog' project.id %}" class="project">
+                        <img class="project__thumbnail" src="{{project.featured_image.url}}" alt="project thumbnail" />
+                        <div class="card__body">
+                            <h3 class="project__title">{{project.title}}</h3>
+                            <p><a class="project__author" href="">By
+                                    {{project.owner}}</a>
+                            </p>
+                            
+                            
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+
+</main>
+
+
+
+
+{% endblock %}

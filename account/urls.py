@@ -8,5 +8,10 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('patient/', views.patient, name='patient'),
     path('doctor/', views.doctor, name='doctor'),
-   
+    path('postblogs/', views.postBlog, name='postblogs'),
+    path('blogs/', views.blogs, name='blogs'),
+    path('blog/<str:pk>/',views.blog,name='blog'),
+    path('updateblog/<str:pk>/',views.updateblog,name='updateblog'),
+    path('deleteblog/<str:pk>/',views.deleteblog,name='deleteblog'),
+    path('drafts',views.drafts,name='drafts'),
 ]

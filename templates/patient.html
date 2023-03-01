@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>admin page</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
     <h1> hello {{ user.username }} your role is patient</h1>
-</body>
-</html>
+
+    {% endblock %}
