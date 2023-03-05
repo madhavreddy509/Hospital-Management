@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, LoginForm,BlogForm
+from .forms import SignUpForm, LoginForm,BlogForm,CategoryForm,AppointmentForm
 from django.contrib.auth import authenticate, login
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from . models import Blog
+from . models import Blog,User,Appointment
 
 
 def index(request):
@@ -53,8 +53,33 @@ def patient(request):
     return render(request,'patient.html')
 
 @login_required(login_url='login_view')
-def doctor(request):
-    return render(request,'doctor.html')
+def doctors(request):
+    
+    blogsobj=User.objects.filter(is_doctor=True)
+
+    return render(request,'doctor.html',{'blogs':blogsobj})
+
+def doctor(request,pk):
+    patient=request.user
+    print("-----------------",patient)
+    blogobj=User.objects.get(id=pk)
+    print("---------------------",blogobj)
+    
+    form=AppointmentForm()
+    if request.method=='POST':
+        form=AppointmentForm(request.POST)
+        if form.is_valid():
+            appointment=form.save(commit=False)
+            appointment.doctor=blogobj
+            appointment.patient=patient
+            appointment.save()
+            return redirect('doctor')
+        else:
+            print("some------------------------------------------")
+    
+    return render(request,'doctor-single.html',{'blogs':blogobj,'form':form})
+
+
 
 def postBlog(request):
     profile=request.user
@@ -71,8 +96,13 @@ def postBlog(request):
     return render (request,'blog_form.html',content)
     
 def blogs(request):
-    blogsobj=Blog.objects.filter(draft=False)
-    return render(request,'blogs.html',{'blogs':blogsobj})
+    form=CategoryForm()
+    if request.method=='POST':
+        blogsobj=Blog.objects.filter(draft=False).filter(select_category=request.POST['select_category'])
+    else:
+        blogsobj=Blog.objects.filter(draft=False)
+    return render(request,'blogs.html',{'blogs':blogsobj,'form':form})
+
 
 def blog(request,pk):
     blogobj=Blog.objects.get(id=pk)
@@ -100,8 +130,27 @@ def deleteblog(request,pk):
     return render (request,'delete-template.html',content)
 
 def drafts(request):
+    
+
+    form=CategoryForm()
     profile=request.user
-    blogsobj=profile.blog_set.filter(draft=True)
-    return render(request,'blogs.html',{'blogs':blogsobj,'message':'draft Blogs'})
+    if request.method=='POST':
+        blogsobj=profile.blog_set.filter(draft=True).filter(select_category=request.POST['select_category'])
+    else:
+        blogsobj=profile.blog_set.filter(draft=True)
+    return render(request,'blogs.html',{'blogs':blogsobj,'form':form})
+
+def appointments(request):
+    profile=request.user
+    if profile.is_patient:
+        appointmentsobj=Appointment.objects.filter(patient=profile)
+    else:
+        appointmentsobj=Appointment.objects.filter(doctor=profile)
 
     
+    msg="your Doctor appointments"
+    print("--------------------",profile)
+    print("--------------------",appointmentsobj)
+    if profile.is_doctor:
+        msg="your patients"
+    return render(request,'appointments.html',{'blogs':appointmentsobj,'msg':msg})

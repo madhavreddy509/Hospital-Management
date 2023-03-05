@@ -1,0 +1,38 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<section class="projectsList">
+    <div class="container">
+        <div class="grid grid--three">
+
+<h1> {{msg}} </h1>
+
+
+            {% for project in blogs %}
+            <div class="column">
+                <div class="card project">
+                    <a href="#" class="project">
+                        
+                        <div class="card__body">
+                            <h3 class="project__title">doctor -------{{project.doctor}}</h3>
+                            <p><a class="project__author" href="">you have an appoint at{{project.date}} by {{project.doctor}} ---------patient {{project.patient}}
+                            </p>
+                            <p> description of appointment :{{project.description}} </p>
+                            
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+
+</main>
+
+
+
+
+{% endblock %}

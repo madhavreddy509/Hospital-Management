@@ -1,4 +1,40 @@
+
 {% extends 'base.html' %}
 {% block content %}
- <h1> hello {{ user.username }} your role is doctor</h1>
+<section class="projectsList">
+    <div class="container">
+        <div class="grid grid--three">
+{% if message %}
+<h1> {{message}} </h1>
+{% endif %}
+
+<div> <br> </br> </div>
+            {% for project in blogs %}
+            <div class="column">
+                <div class="card project">
+                    <a href="{% url 'doctor-single' project.id %}" class="project">
+                        <img class="project__thumbnail" src="{{project.featured_image.url}}" alt="project thumbnail" />
+                        <div class="card__body">
+                            <h3 class="project__title">{{project.title}}</h3>
+                            <p><a class="project__author" href="">name
+                                    {{project.username}}</a>
+                            </p>
+                            
+                            
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+
+</main>
+
+
+
+
 {% endblock %}

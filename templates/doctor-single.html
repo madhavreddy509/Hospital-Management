@@ -8,9 +8,11 @@
 <h1> {{message}} </h1>
 {% endif %}
 <br></br>
+{% if request.user.is_patient %}
+
 <form class="form" action="" method="POST">
     {% csrf_token %}
-    <p>filter the blogs according to category</p>
+    <p>Take appointment with this doctor</p>
 
     {% for field in form %}
                 <!-- Input:Text -->
@@ -18,21 +20,22 @@
                     <label for="formInput#text">{{field.label}}</label>
                     {{field}}
                 </div>
-                {% endfor %}
+    {% endfor %}
     <a class="btn btn--sub btn--lg  my-md" href="{% url 'blogs' %}"> Refresh </a>
     <input class="btn btn--sub btn--lg  my-md" type="submit" value="Confirm" />
    
 </form>
+{% endif %}
 <div> <br> </br> </div>
-            {% for project in blogs %}
+            
             <div class="column">
                 <div class="card project">
-                    <a href="{% url 'blog' project.id %}" class="project">
-                        <img class="project__thumbnail" src="{{project.featured_image.url}}" alt="project thumbnail" />
+                    <a href="#" class="project">
+                        <img class="project__thumbnail" src="{{blogs.featured_image.url}}" alt="project thumbnail" />
                         <div class="card__body">
-                            <h3 class="project__title">{{project.title}}</h3>
-                            <p><a class="project__author" href="">By
-                                    {{project.owner}}</a>
+                            <h3 class="project__title">{{blogs.username}}</h3>
+                            <p><a class="project__author" href="">E-mail
+                                    {{blogs.email}}</a>
                             </p>
                             
                             
@@ -40,7 +43,7 @@
                     </a>
                 </div>
             </div>
-            {% endfor %}
+            
 
         </div>
     </div>

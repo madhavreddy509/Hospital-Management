@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User,Blog
+from .models import User,Blog,Appointment
 
 from django.forms import ModelForm
 
@@ -87,6 +87,29 @@ class BlogForm (ModelForm):
 
     def __init__(self,*args,**kwargs):
         super(BlogForm, self).__init__(*args,**kwargs)
+
+        for name,field in self.fields.items():
+            field.widget.attrs.update({'class':'input'})
+
+class CategoryForm(ModelForm):
+    class Meta:
+        model=Blog
+        fields=['select_category']
+    
+    def __init__(self,*args,**kwargs):
+        super(CategoryForm, self).__init__(*args,**kwargs)
+
+        for name,field in self.fields.items():
+            field.widget.attrs.update({'class':'input'})
+
+class AppointmentForm (ModelForm):
+    class Meta:
+        model=Appointment
+        fields =['date','select_category','description']
+        
+
+    def __init__(self,*args,**kwargs):
+        super(AppointmentForm, self).__init__(*args,**kwargs)
 
         for name,field in self.fields.items():
             field.widget.attrs.update({'class':'input'})
